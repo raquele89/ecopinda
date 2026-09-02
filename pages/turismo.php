@@ -3,17 +3,19 @@ session_start();
 
 require_once(__DIR__ . "/../src/conexao.php");
 
-$sql = "SELECT * FROM restaurante";
-$result = mysqli_query($conexao, $sql);
+$sql = "SELECT * FROM pontosturisticos";
+ $result = mysqli_query($conexao, $sql);
 
 if (!$result) {
-    die("Erro ao buscar restaurantes: " . mysqli_error($conexao));
-}
+     die("Erro ao buscar pontosturisticos: " . mysqli_error($conexao));
+ }
 ?>
+<!DOCTYPE html>
+<html lang="pt-BR">
 
 
 <?php include '../includes/head.php'; ?>
-<link rel="stylesheet" href="../assets/css/style_cidade.css"> <!-- // fazer css turismo -->
+<!-- <link rel="stylesheet" href="../assets/css/style_cidade.css"> // fazer css turismo -->
 <?php include '../includes/header.php'; ?>
 
 <section class="hero">
@@ -23,7 +25,7 @@ if (!$result) {
     </video>
 </section>
 
-<section class="pontos turisticos">
+<section class="pontosturisticos">
     <div id="titulo">
         <h3>Descubra Pindamonhangaba</h3>
         <h1>Uma cidade onde história, natureza, cultura e belas paisagens se encontram.</h1>
@@ -40,6 +42,12 @@ if (!$result) {
         #Pindamonhangaba #TurismoPinda #VisitePindamonhangaba #Turismo #ValeDoParaíba #ConheçaPinda #TurismoSP</p>
     </div>
 </section>
+
+<div class="botao-cadastro">
+    <a href="formulariopontosturisticos.php"> 
+        + Cadastrar Novo Pontos Turísticos
+    </a>
+</div>
 
 <section class="pontosturisticos">
 <?php if (mysqli_num_rows($result) > 0): ?> <!-- se a condição for verdadeira faça o que está abaixo -->
@@ -64,9 +72,14 @@ if (!$result) {
 
           <?php endif; ?>   <!-- fim do que começou anteriormente -->
 
-            <h3>
-                <?= htmlspecialchars($row['nome']) ?>
-            </h3>
+            <!-- <h3> -->
+                <!-- <?= htmlspecialchars($row['nome']) ?> -->
+            <!-- </h3> -->
+
+            <p>
+                <strong>Nome:</strong>
+                <?= htmlspecialchars($row['nome'] ?? 'Não informado') ?>
+            </p>
 
             <p>
                 <strong>Categoria:</strong>
@@ -74,38 +87,53 @@ if (!$result) {
             </p>
 
             <p>
-                <strong>Cidade:</strong>
-                <?= htmlspecialchars($row['cidade'] ?? 'Não informado') ?>
+                <strong>Descrição: </strong>
+                <?= htmlspecialchars($row['descricao'] ?? 'Não informado') ?>
             </p>
 
             <p>
-                <strong>Horário:</strong>
-                <?= htmlspecialchars($row['horario_funcionamento'] ?? 'Não informado') ?>
+                <strong>Logradouro:</strong>
+                <?= !empty($row['logradouro']) ?? 'Não informado' ?>
             </p>
 
             <p>
-                <strong>Delivery:</strong>
-                <?= !empty($row['possui_delivery']) ? 'Sim' : 'Não' ?>
+                <strong>Número:</strong>
+                <?= !empty($row['numero']) ?? 'Não informado' ?>
+            </p>
+
+             <p>
+                <strong>Bairro:</strong>
+                <?= htmlspecialchars($row['bairro'] ?? 'Não informado') ?>
             </p>
 
             <p>
-                <strong>Wi-Fi:</strong>
-                <?= !empty($row['possui_wifi']) ? 'Sim' : 'Não' ?>
+                <strong>Horário de Visita: </strong>
+                <?= htmlspecialchars($row['horario_visita'] ?? 'Não informado') ?>
             </p>
 
+            <p>
+                <strong>Mapa:</strong>
+                <?= !empty($row['mapa']) ?? 'Não informado' ?>
+            </p>
+
+            <p>
+                <strong>Indicação de Acessibilidade:</strong>
+                <?= !empty($row['numero']) ? 'Sim':'Não' ?>
+            </p>
+           
             <div class="acoes">
 
                 <a
-                    href="../src/editarRestaurante.php?id=<?= $row['id'] ?>"
+                    href="../src/editarpontosturisticos.php?id=<?= $row['id'] ?>"
                     class="btn-editar"
                 >
                     Editar
                 </a>
 
                 <a
-                    href="../src/deletarRestaurante.php?id=<?= $row['id'] ?>"
+                    href="../src/deletarpontosturisticos.php?id=<?= $row['id'] ?>"
                     class="btn-excluir"
-                    onclick="return confirm('Tem certeza que deseja excluir este restaurante?');"
+                    onclick="return confirm('Tem certeza que deseja excluir este pontosturisticos?');"
                 >
                     Excluir
                 </a>
@@ -118,9 +146,9 @@ if (!$result) {
 
 <?php else: ?>
 
-    <div class="nenhum-restaurante">
-        <h3>Nenhum restaurante cadastrado</h3>
-        <p>Ainda não existem restaurantes cadastrados.</p>
+    <div class="nenhum-pontosturisticos">
+        <h3>Nenhum Ponto Turistíco cadastrado</h3>
+        <p>Ainda não existem Ponto Turístico cadastrados.</p>
     </div>
 
 <?php endif; ?>
